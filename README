@@ -2,11 +2,11 @@
 
 ## macOS Sierra 10.12
 
+* You can just follow this page. https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-SQL-Server-from-Mac-OSX
+* Then, let's install python libraries with pip.
+
 '''
-brew install freetds@0.91
-brew link --force freetds@0.91
 pip install pymssql
-brew install unixodbc
 pip install pyodbc
 '''
 
