@@ -58,7 +58,7 @@ class PyODBC(PyComm):
         super().__init__(t1,t2)
 
     def create_connection(self,h,_,u,w,d):
-        return pyodbc.connect("DRIVER={SQL Server};SERVER={0};UID={2};PWD={3};DATABASE={4}".format(h,p,u,w,d))
+        return pyodbc.connect("DSN={0};UID={1};PWD={2};DATABASE={3}".format(h,u,w,d))
     
     def create_databsase(self,cnn):
         cnn.execute("CREATE DATABASE test_db IF NOT EXIST");
@@ -128,20 +128,17 @@ class PyODBC(PyComm):
 ####################
 
 if __name__ == "__main__":
-    if 5 < len(sys.argv):
 
-        h = sys.argv[1]
-        p = sys.argv[2]
-        u = sys.argv[3]
-        w = sys.argv[4]
-        d = sys.argv[5]
+    if 5 < len(sys.argv):
 
         #db = PyMSSQL()
         db = PyODBC()
         #db.mode = "real"
-        cnn = db.create_connection()
+        cnn = db.create_connection(*sys.argv[1:])
         #db.create_database()
         db.create_table(cnn)
         db.insert_data(cnn)
         db.update_data(cnn)
 
+    else:
+        print("python "+sys.argv[0]+" xxx.abcdefg.ap-northeast-1.rds.amazonaws.com 1433 root pass database")
