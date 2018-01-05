@@ -1,0 +1,14 @@
+# Install
+
+## macOS Sierra 10.12
+
+'''
+brew install freetds@0.91
+brew link --force freetds@0.91
+pip install pymssql
+brew install unixodbc
+pip install pyodbc
+'''
+
+## Windows
+
