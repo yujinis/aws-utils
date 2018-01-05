@@ -6,8 +6,7 @@
 * Then, let's install python libraries with pip.
 
 ```
-pip install pymssql
-pip install pyodbc
+pip install pymssql pyodbc
 ```
 
 ## Windows
