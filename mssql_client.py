@@ -1,26 +1,30 @@
 import pymssql
 import pyodbc
+import sys
+
+ite_number = 100000
 
 c64 = """
 aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffgggg
 """
 
-rc64 = c64.reverse()
+rc64 = c64[::-1]
 
 c256 = """
 aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffggggaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffggggaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffggggaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffgggg
 """
 
-rc256 = c256.reverse()
+rc256 = c256[::-1]
 
 text = """
 ああああああああああいいいいいいいいいいううううううううううええええええええええおおおおおおおおおおああああああああああいいいいいいいいいいううううううううううええええええええええおおおおおおおおおお
 """
 
-rtext = text.reverse()
+rtext = text[::-1]
 
 class PyComm:
     def __init__(self,t1=0,t2=0):
+        self.mode = "test"
         self.insert_sleep = t1
         self.inserts_sleep = t2
 
@@ -29,6 +33,12 @@ class PyComm:
 
     def sleep_each_inserts(self):
         sleep(self.inserts_sleep)
+
+    def get_itarative_number(self):
+        if self.mode == "test":
+            return 2
+        else:
+            return ite_number
 
 class PyMSSQL(PyComm):
 
@@ -68,7 +78,7 @@ class PyODBC(PyComm):
 
     def insert_data(self,cnn):
         for i in range(100000):
-            self.insert_data_unit(self,cnn,i):
+            self.insert_data_unit(self,cnn,i)
 
     def insert_data_unit(self,cnn,i):
         cur = conn.cursor()
@@ -92,10 +102,10 @@ class PyODBC(PyComm):
         self.sleep_each_inserts()
 
         for i in range(100000):
-            self,update_data_unit(rev=True,cnn,i)
+            self,update_data_unit(cnn,i,rev=True)
             self.sleep_each_insert()
 
-    def update_data_unit(self,rev=False,,cnn,i):
+    def update_data_unit(self,cnn,i,rev=False):
         if rev:
             _c64  = rc64
             _c256 = rc256
@@ -117,11 +127,21 @@ class PyODBC(PyComm):
 
 ####################
 
-#db = PyMSSQL()
-db = PyODBC()
-cnn = db.create_connection()
-#db.create_database()
-db.create_table(cnn)
-db.insert_data(cnn)
-db.update_data(cnn)
+if __name__ == "__main__":
+    if 5 < len(sys.argv):
+
+        h = sys.argv[1]
+        p = sys.argv[2]
+        u = sys.argv[3]
+        w = sys.argv[4]
+        d = sys.argv[5]
+
+        #db = PyMSSQL()
+        db = PyODBC()
+        #db.mode = "real"
+        cnn = db.create_connection()
+        #db.create_database()
+        db.create_table(cnn)
+        db.insert_data(cnn)
+        db.update_data(cnn)
 
