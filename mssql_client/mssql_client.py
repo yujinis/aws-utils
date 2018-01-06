@@ -1,6 +1,7 @@
 import pymssql
 import pyodbc
 import sys,time
+import multiprocessing as mp
 
 iter_count = 100000
 
@@ -137,6 +138,17 @@ class PyODBC(PyComm):
         conn.commit()
 
 
+def job_db():
+    #db = PyMSSQL()
+    db = PyODBC()
+    #db.mode = "real"
+    conn = db.create_connection(*sys.argv[1:])
+    #db.create_database()
+    db.drop_table(conn)
+    db.create_table(conn)
+    db.insert_data(conn)
+    db.update_data(conn)
+
 if __name__ == "__main__":
 
     #print(len(c64))
@@ -144,17 +156,23 @@ if __name__ == "__main__":
     #print(len(rtext))
 
     if 4 < len(sys.argv):
+        if 5 < len(sys.argv):
+            # Multi processes
+            jobs = []
+            for i in range(sys.argv[5]):
+                job = mp.Process(target=job_db)
+                jobs.append(job)
+                job.start()
 
-        #db = PyMSSQL()
-        db = PyODBC()
-        #db.mode = "real"
-        conn = db.create_connection(*sys.argv[1:])
-        #db.create_database()
-        db.drop_table(conn)
-        db.create_table(conn)
-        db.insert_data(conn)
-        db.update_data(conn)
+            # Will wait until all jobs end.
+            for job in jobs:
+                job.join()
+
+        else:
+            # Single process
+            job_db()
 
     else:
         print("(For pyodbc) python "+sys.argv[0]+" DSN root pass database")
+
 
