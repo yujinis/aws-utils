@@ -37,7 +37,7 @@ class PyComm:
         if self.mode == "test":
             return 2
         else:
-            return iter_count / job_number
+            return iter_count // job_number
 
 class PyMSSQL(PyComm):
 
