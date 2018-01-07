@@ -1,4 +1,6 @@
-import pymssql
+# encoding:utf-8
+
+#import pymssql
 import pyodbc
 import sys,time
 import multiprocessing as mp
