@@ -1,3 +1,4 @@
+CREATE DATABASE test_db;
 USE test_db;
 CREATE TABLE test_table (
   aaa_int INT(10) AUTO_INCREMENT,
