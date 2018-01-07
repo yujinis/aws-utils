@@ -78,7 +78,7 @@ class PyODBC(PyComm):
         try:
             cur.execute("""
             CREATE TABLE test_table (
-                a_int INT AUTO INCREMENT,
+                a_int INT IDENTITY(1,1),
                 b_char CHAR(64),
                 c_char CHAR(256),
                 d_nvarchar NVARCHAR(256),
@@ -88,6 +88,7 @@ class PyODBC(PyComm):
         except pyodbc.ProgrammingError as e:
             print(e)
             if "There is already an object" in e.args[1]:
+                print("!! This exception is not caught as an error. !!")
                 pass
             else:
                 sys.exit(-1)
@@ -106,7 +107,7 @@ class PyODBC(PyComm):
             b_char,
             c_char,
             d_nvarchar) VALUES (
-            {0},'{1}','{2}'
+            '{0}','{1}','{2}'
         )
         """.format(c64,c256,text))
         conn.commit()
@@ -144,7 +145,7 @@ class PyODBC(PyComm):
         conn.commit()
 
 
-def job_db():
+def job_db(i=0):
     #db = PyMSSQL()
     db = PyODBC()
     #db.mode = "real"
@@ -167,7 +168,7 @@ if __name__ == "__main__":
             # Multi processes
             jobs = []
             for i in range(job_number):
-                job = mp.Process(target=job_db)
+                job = mp.Process(target=job_db,args=(i,))
                 jobs.append(job)
                 job.start()
 
