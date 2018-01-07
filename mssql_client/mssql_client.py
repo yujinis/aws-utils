@@ -156,7 +156,9 @@ def job_db(i=0):
         db.drop_table(conn)
         db.create_table(conn)
     db.insert_data(conn)
-    db.update_data(conn)
+    # Configure as many iterations as you want.
+    for i in range(1):
+        db.update_data(conn)
 
 if __name__ == "__main__":
 
