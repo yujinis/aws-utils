@@ -10,7 +10,7 @@
 pip install pymssql pyodbc
 ```
 
-## ReHat 6
+## RedHat 6
 
 * Follow this page first. https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-SQL-Server-from-RHEL-or-Centos
 * Before doing the bottom one, install python 3.6.

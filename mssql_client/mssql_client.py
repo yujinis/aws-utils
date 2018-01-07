@@ -61,9 +61,12 @@ class PyODBC(PyComm):
  
     def drop_table(self,conn):
         print("drop_table")
-        cur = conn.cursor()
-        cur.execute("DROP TABLE test_table")
-        conn.commit()
+        try:
+            cur = conn.cursor()
+            cur.execute("DROP TABLE test_table")
+            conn.commit()
+        except:
+            pass
 
     def create_table(self,conn):
         print("create_table")
