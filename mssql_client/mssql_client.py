@@ -24,6 +24,7 @@ job_number = 1
 class PyComm:
     def __init__(self,t1=0,t2=0):
         self.mode = "test"
+        self.pid = 0
         self.insert_sleep = t1
         self.inserts_sleep = t2
 
@@ -57,14 +58,14 @@ class PyODBC(PyComm):
         super().__init__(t1,t2)
 
     def create_connection(self,dsn,u,w,d):
-        print("create_connection")
+        print("create_connection {0}".format(self.pid))
         return pyodbc.connect("DSN={0};UID={1};PWD={2};DATABASE={3}".format(dsn,u,w,d), timeout=10)
     
     def create_databsase(self,conn):
         conn.execute("CREATE DATABASE test_db IF NOT EXIST");
  
     def drop_table(self,conn):
-        print("drop_table")
+        print("drop_table {0}".format(self.pid))
         try:
             cur = conn.cursor()
             cur.execute("DROP TABLE test_table")
@@ -73,7 +74,7 @@ class PyODBC(PyComm):
             pass
 
     def create_table(self,conn):
-        print("create_table")
+        print("create_table {0}".format(self.pid))
         cur = conn.cursor()
         try:
             cur.execute("""
@@ -96,7 +97,7 @@ class PyODBC(PyComm):
             conn.commit()
 
     def insert_data(self,conn):
-        print("insert_data : {0}".format(self.get_iter_count()))
+        print("insert_data {0} : {1}".format(self.pid,self.get_iter_count()))
         for i in range(self.get_iter_count()):
             self.insert_data_unit(conn)
 
@@ -113,7 +114,7 @@ class PyODBC(PyComm):
         conn.commit()
 
     def update_data(self,conn):
-        print("update_data : {0}".format(self.get_iter_count()))
+        print("update_data {0} : {1}".format(self.pid,self.get_iter_count()))
         for i in range(self.get_iter_count()):
             self.update_data_unit(conn,i)
             self.sleep_each_insert()
@@ -151,8 +152,9 @@ def job_db(i=0):
     #db.mode = "real"
     conn = db.create_connection(*sys.argv[1:5])
     #db.create_database()
-    db.drop_table(conn)
-    db.create_table(conn)
+    if i==1:
+        db.drop_table(conn)
+        db.create_table(conn)
     db.insert_data(conn)
     db.update_data(conn)
 
@@ -167,10 +169,11 @@ if __name__ == "__main__":
             job_number = int(sys.argv[5])
             # Multi processes
             jobs = []
-            for i in range(job_number):
+            for i in range(1,job_number+1):
                 job = mp.Process(target=job_db,args=(i,))
                 jobs.append(job)
                 job.start()
+                if i==1: time.sleep(1)
 
             # Will wait until all jobs end.
             for job in jobs:
