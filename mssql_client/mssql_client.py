@@ -19,6 +19,8 @@ text = "ああああああああああいいいいいいいいいいうううう
 
 rtext = text[::-1]
 
+job_number = 1
+
 class PyComm:
     def __init__(self,t1=0,t2=0):
         self.mode = "test"
@@ -35,7 +37,7 @@ class PyComm:
         if self.mode == "test":
             return 2
         else:
-            return iter_count
+            return iter_count / job_number
 
 class PyMSSQL(PyComm):
 
@@ -76,7 +78,7 @@ class PyODBC(PyComm):
         try:
             cur.execute("""
             CREATE TABLE test_table (
-                a_int INT NOT NULL,
+                a_int INT AUTO INCREMENT,
                 b_char CHAR(64),
                 c_char CHAR(256),
                 d_nvarchar NVARCHAR(256),
@@ -95,19 +97,18 @@ class PyODBC(PyComm):
     def insert_data(self,conn):
         print("insert_data : {0}".format(self.get_iter_count()))
         for i in range(self.get_iter_count()):
-            self.insert_data_unit(conn,i)
+            self.insert_data_unit(conn)
 
-    def insert_data_unit(self,conn,i):
+    def insert_data_unit(self,conn):
         cur = conn.cursor()
         cur.execute("""
         INSERT INTO test_table (
-            a_int,
             b_char,
             c_char,
             d_nvarchar) VALUES (
-            {0},'{1}','{2}','{3}'
+            {0},'{1}','{2}'
         )
-        """.format(i,c64,c256,text))
+        """.format(c64,c256,text))
         conn.commit()
 
     def update_data(self,conn):
@@ -147,7 +148,7 @@ def job_db():
     #db = PyMSSQL()
     db = PyODBC()
     #db.mode = "real"
-    conn = db.create_connection(*sys.argv[1:])
+    conn = db.create_connection(*sys.argv[1:5])
     #db.create_database()
     db.drop_table(conn)
     db.create_table(conn)
@@ -162,9 +163,10 @@ if __name__ == "__main__":
 
     if 4 < len(sys.argv):
         if 5 < len(sys.argv):
+            job_number = int(sys.argv[5])
             # Multi processes
             jobs = []
-            for i in range(sys.argv[5]):
+            for i in range(job_number):
                 job = mp.Process(target=job_db)
                 jobs.append(job)
                 job.start()
