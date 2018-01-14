@@ -139,8 +139,8 @@ class PyODBC(PyComm):
         conn.execute("""
         UPDATE test_table SET
         b_char='{0}',
-        c_char='(1)',
-        d_nvarchar='(2)'
+        c_char='{1}',
+        d_nvarchar='{2}'
         WHERE a_int = {3}
         """.format(_c64,_c256,_text,i))
         conn.commit()
