@@ -1,6 +1,7 @@
 <?php
 
-//  Need to two arguments, s3 and bucket_key
+//  Need just two arguments, s3 and bucket_key
+//  and two environment variables, AWS_ACCESS_KEY_ID and AWS_SECRET_KEY_ID
 if( count($argv) != 3) {
     exit(-1);
 }
