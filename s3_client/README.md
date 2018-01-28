@@ -1,5 +1,6 @@
 ## s3_client.go
-### AWS SDK Go
+To create too many files on S3 with AWS SDK Go.
 
 ## s3_client_curl.go
-### https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/dev/RESTAuthentication.html#ConstructingTheAuthenticationHeader
+To do curl for private bucket with AWS certification.
+https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/dev/RESTAuthentication.html#ConstructingTheAuthenticationHeader
