@@ -1,4 +1,4 @@
-*** https://docs.aws.amazon.com/cloudhsm/latest/userguide/cloudhsm-user-guide.pdf
+### https://docs.aws.amazon.com/cloudhsm/latest/userguide/cloudhsm-user-guide.pdf
 
 ```
 javac -cp "/opt/cloudhsm/java/*" LoginLogoutExample.java SymmetricKeyGeneration.java SymmetricEncryptDecryptExample.java 
