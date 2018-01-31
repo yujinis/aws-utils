@@ -1,5 +1,14 @@
 ### https://docs.aws.amazon.com/cloudhsm/latest/userguide/cloudhsm-user-guide.pdf
 
+### Need Java8
+
+```
+[ec2-user@ip-172-31-16-57 ~]$ rpm -qa | grep -i java-1.8
+java-1.8.0-openjdk-devel-1.8.0.151-1.b12.35.amzn1.x86_64
+java-1.8.0-openjdk-1.8.0.151-1.b12.35.amzn1.x86_64
+java-1.8.0-openjdk-headless-1.8.0.151-1.b12.35.amzn1.x86_64
+```
+
 ```
 javac -cp "/opt/cloudhsm/java/*" LoginLogoutExample.java SymmetricKeyGeneration.java SymmetricEncryptDecryptExample.java 
 ```
